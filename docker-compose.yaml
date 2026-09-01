@@ -1,0 +1,84 @@
+networks:
+  red-microservicios:
+    driver: bridge
+
+volumes:
+  mysql_data:
+
+services:
+
+  # 1. Base de datos
+  database:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: bankatm_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - red-microservicios
+
+  # 2. Servidor Eureka
+  eureka-server:
+    build: ./BankATM_EurekaServer
+    container_name: bankatm-eurekaservercontainer
+    restart: always
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+    networks:
+      - red-microservicios
+
+  # 3. API Gateway
+  api-gateway:
+    build: ./BankATM_APIGateway
+    container_name: bankatm-apigatewaycontainer
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - red-microservicios
+
+  # 4. Microservicio de Usuarios
+  servicio-usuarios:
+    build: ./BankATM_User
+    container_name: bankatm-usercontainer
+    restart: always
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - "SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/bankatm_db?allowPublicKeyRetrieval=true&useSSL=false"
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - eureka-server
+      - database
+    networks:
+      - red-microservicios
+
+  # 5. Microservicio de Pedidos
+  servicio-pedidos:
+    build: ./BankATM_Order
+    container_name: bankatm-ordercontainer
+    restart: always
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - "SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/bankatm_db?allowPublicKeyRetrieval=true&useSSL=false"
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - eureka-server
+      - database
+    networks:
+      - red-microservicios
