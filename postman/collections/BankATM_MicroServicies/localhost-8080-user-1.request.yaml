@@ -1,0 +1,41 @@
+$kind: http-request
+name: localhost:8080/user
+description: ""
+url: localhost:8080/user
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \t\"id\":\"null\",\r
+
+    \t\"name\":\"Alfredo\",\r
+
+    \t\"apellidos\":\"Minguez Ranz\",\r
+
+    \t\"password\":\"a123\",\r
+
+    \t\"role\":\"USER\",\r
+
+    \t\"dni\":\"73737373J\",\r
+
+    \t\"email\":\"alfredominguez73@gmail.com\",\r
+
+    \t\"phone\":\"737373737\",\r
+
+    \t\"money\":\"5000\",\r
+
+    \t\"location\":\"Soria\"\r
+
+    }"
+auth:
+  type: basic
+  credentials:
+    username: 03217373H
+    password: p123
+settings:
+  strictSSL: false
+  followRedirects: true
+  disableCookies: false
+  maxResponseSize: 52428800
+order: 3578930427305550

@@ -1,0 +1,11 @@
+$kind: http-request
+name: localhost:8080/order
+description: ""
+url: localhost:8080/order
+method: DELETE
+settings:
+  strictSSL: false
+  followRedirects: true
+  disableCookies: false
+  maxResponseSize: 52428800
+order: 4386431086732013

@@ -1,0 +1,27 @@
+$kind: http-request
+description: ""
+url: http://localhost:8080/user
+method: GET
+auth:
+  type: oauth2
+  credentials:
+    accessToken: "{{supabase_service_role_api_key_0s6x}}X3QMGH8XRO1sMFIIh-H9XoqLgxa\
+      vmA0r3Y5tFYP4_JDuem6IlJmzVgHKd1fKf0dFfWhLyXWUPt6_WI9PetnQ8HRqPB7rXUmRtmlF\
+      MdP3xYVwpuSKqYvYO60OL4KE2VbnLEF5WnFEndrW0MQxsisySWaxrMxRXZuNBLoamddZsb1W_\
+      zkfkXSlnye1PM-dw"
+    tokenType: Bearer
+    addTokenTo: header
+    id: http-request/3555881d-0399-4ce7-9e68-60398eb0f63c/e4ebb5e5-8eeb-4ddc-8d47-14796591e7bb
+    tokenName: GoogleToken
+    useBrowser: true
+    authUrl: https://accounts.google.com/o/oauth2/v2/auth
+    accessTokenUrl: https://oauth2.googleapis.com/token
+    clientId: "{{GOOGLE_CLIENT_ID}}"
+    clientSecret: "{{GOOGLE_CLIENT_SECRET}}"
+    scope: openid profile email
+settings:
+  strictSSL: false
+  followRedirects: true
+  disableCookies: false
+  maxResponseSize: 52428800
+order: 3000

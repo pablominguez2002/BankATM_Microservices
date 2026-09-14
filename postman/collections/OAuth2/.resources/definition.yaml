@@ -1,0 +1,8 @@
+$kind: collection
+variables:
+  - key: google_oauth_token_0864
+    secret: true
+    disabled: false
+  - key: supabase_service_role_api_key_0s6x
+    secret: true
+    disabled: false

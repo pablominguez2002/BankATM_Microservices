@@ -1,0 +1,7 @@
+name: Google OAuth2
+values:
+  - key: GOOGLE_CLIENT_ID
+    secret: true
+  - key: GOOGLE_CLIENT_SECRET
+    secret: true
+color: 120

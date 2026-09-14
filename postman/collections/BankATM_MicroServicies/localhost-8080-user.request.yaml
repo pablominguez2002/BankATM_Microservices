@@ -1,0 +1,16 @@
+$kind: http-request
+name: localhost:8080/user
+description: ""
+url: localhost:8080/user
+method: GET
+auth:
+  type: basic
+  credentials:
+    username: 03217373H
+    password: p123
+settings:
+  strictSSL: false
+  followRedirects: true
+  disableCookies: false
+  maxResponseSize: 52428800
+order: 1788280543781

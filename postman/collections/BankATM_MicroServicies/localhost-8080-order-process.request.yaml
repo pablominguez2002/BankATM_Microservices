@@ -1,0 +1,29 @@
+$kind: http-request
+name: localhost:8080/order/process
+description: ""
+url: localhost:8080/order/process
+method: POST
+body:
+  type: json
+  content: "    {\r
+
+    \        \"quantity\": 10000.0,\r
+
+    \        \"from\": \"03217373H\",\r
+
+    \        \"towards\": \"73737373J\",\r
+
+    \        \"id\": 2\r
+
+    \    }"
+auth:
+  type: basic
+  credentials:
+    username: 03217373H
+    password: p123
+settings:
+  strictSSL: false
+  followRedirects: true
+  disableCookies: false
+  maxResponseSize: 52428800
+order: 4462069012206524
