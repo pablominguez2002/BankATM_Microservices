@@ -2,8 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/APIGateway" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/BankATM_APIGateway" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/BankATM_EurekaServer" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/BankATM_Order" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/BankATM_User" vcs="Git" />
   </component>

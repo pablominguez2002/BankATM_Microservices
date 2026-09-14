@@ -1,26 +1,27 @@
-#!/bin/bash
+# Le podemos añadir la creacion de topicos y ciertas más cosas - el de Docker Compose esta mejor Hecho
+# Recordar que este es herramienta externa
 
-# 1. Start or recreate the Kafka container
+#!/bin/bash
+set -e
+
+# 1. Iniciar el contenedor de Kafka
 docker compose up -d --force-recreate kafka
 
-# 2. Wait until Kafka is fully ready to accept connections
-echo "Waiting for Kafka to be ready..."
+# 2. Esperar unos segundos a que el proceso arranque
+echo "Iniciando Kafka..."
+sleep 5
 
-# 3. Create the Admin credentials file inside the container
-until docker compose exec kafka bash -c 'cat < /tmp/admin.properties
+# 3. Crear el archivo de credenciales de administración
+docker compose exec -T kafka bash -c 'cat > /tmp/admin.properties <<EOF
 security.protocol=SASL_PLAINTEXT
 sasl.mechanism=PLAIN
 sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="admin-password";
 EOF'
 
-kafka-topics --bootstrap-server localhost:9092 --list > /dev/null 2>&1; do
-  sleep 2
-done
+echo "¡Kafka está listo!"
 
-echo "Kafka is up and running!"
-
-# 4. Apply WRITE permissions for writer-app
-docker compose exec kafka kafka-acls --bootstrap-server localhost:9092 \
+# 4. Permisos de ESCRITURA para writer-app
+MSYS_NO_PATHCONV=1 docker compose exec -T kafka /opt/kafka/bin/kafka-acls.sh --bootstrap-server localhost:9091 \
   --command-config /tmp/admin.properties \
   --add \
   --allow-principal User:writer-app \
@@ -28,20 +29,12 @@ docker compose exec kafka kafka-acls --bootstrap-server localhost:9092 \
   --operation Describe \
   --topic ordersTopic
 
-# 5. Apply READ permissions for consumer-app
-docker compose exec kafka kafka-acls --bootstrap-server localhost:9092 \
+# 5. Permisos de LECTURA para consumer-app (Tópico + Grupo de consumo)
+MSYS_NO_PATHCONV=1 docker compose exec -T kafka /opt/kafka/bin/kafka-acls.sh --bootstrap-server localhost:9091 \
   --command-config /tmp/admin.properties \
   --add \
   --allow-principal User:consumer-app \
   --operation Read \
   --operation Describe \
-  --topic ordersTopic
-
-docker compose exec kafka kafka-acls --bootstrap-server localhost:9092 \
-  --command-config /tmp/admin.properties \
-  --add \
-  --allow-principal User:consumer-app \
-  --operation Read \
+  --topic ordersTopic \
   --group order-group
-
-echo "Kafka ACL permissions configured successfully!"
