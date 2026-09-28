@@ -1,3 +1,6 @@
+#Se pueden añadir variables de Entorno para Configurar ciertos Parametros de los Contenedores (Archivo .env)
+#EJ: Nombre, Usuario y Contraseña de la DB / Google Client ID y Google Client Secret
+
 networks:
   red-microservicios:
     driver: bridge
