@@ -53,24 +53,7 @@ services:
     networks:
       - red-microservicios
 
-  # 4. Microservicio de Usuarios
-  servicio-usuarios:
-    build: ./BankATM_User
-    container_name: bankatm-usercontainer
-    restart: always
-    environment:
-      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
-      - "SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/bankatm_db?allowPublicKeyRetrieval=true&useSSL=false"
-      - SPRING_DATASOURCE_USERNAME=root
-      - SPRING_DATASOURCE_PASSWORD=root
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    depends_on:
-      - eureka-server
-      - database
-    networks:
-      - red-microservicios
-
-  # 5. Microservicio de Pedidos
+  # 4. Microservicio de Pedidos
   servicio-pedidos:
     build: ./BankATM_Order
     container_name: bankatm-ordercontainer
@@ -87,15 +70,56 @@ services:
     networks:
       - red-microservicios
 
-  #6. Apache Kafka
+  # 5. Microservicio de Usuarios
+  servicio-usuarios:
+    build: ./BankATM_User
+    container_name: bankatm-usercontainer
+    restart: always
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - "SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/bankatm_db?allowPublicKeyRetrieval=true&useSSL=false"
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - eureka-server
+      - database
+    networks:
+      - red-microservicios
+
+  # 6. Microservicio de Notificaciones
+  servicio-notificaciones:
+    build: ./BankATM_Notification
+    container_name: bankatm-notificationcontainer
+    restart: always
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - red-microservicios
+
+  # 7. Microservicio de Hardware
+  servicio-hardware:
+    build: ./BankATM_Hardware
+    container_name: bankatm-hardwarecontainer
+    restart: always
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    depends_on:
+      - eureka-server
+    networks:
+      - red-microservicios
+
+  #8. Apache Kafka
   kafka:
     image: apache/kafka:latest
     container_name: kafka
     ports:
-      - "9091:9091"
+      - "9092:9092"
     volumes:
       - kafka-data:/var/lib/kafka/data
-      - ./kafka_jaas.conf:/etc/kafka/kafka_jaas.conf:ro
+      #- ./kafka_jaas.conf:/etc/kafka/kafka_jaas.conf:ro
     networks:
       - red-microservicios
     environment:
@@ -118,7 +142,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: 'INTERNAL://kafka:9092,EXTERNAL://localhost:9091'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'INTERNAL:SASL_PLAINTEXT,EXTERNAL:SASL_PLAINTEXT,CONTROLLER:PLAINTEXT'
 
-      KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/kafka_jaas.conf"
+      #KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/kafka_jaas.conf"
 
       # Single quotes pass the exact raw string directly to the container environment
 
@@ -136,53 +160,53 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 1
 
-  # Servicio de inicialización para ACLs
-  kafka-init:
-    image: apache/kafka:latest
-    container_name: kafka-init
-    networks:
-      - red-microservicios
-    depends_on:
-      - kafka
-    entrypoint: [ "/bin/bash", "-c" ]
-    command:
-      - |
-        echo "Esperando a que el broker de Kafka esté disponible..."
-        sleep 10
-      
-        echo "1. Creando archivo de credenciales..."
-        cat > /tmp/admin.properties <<EOF
-        security.protocol=SASL_PLAINTEXT
-        sasl.mechanism=PLAIN
-        sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="admin-password";
-        EOF
-      
-        echo "2. Creando Topicos..."
-        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 \
-          --command-config /tmp/admin.properties \
-          --create \
-          --if-not-exists \
-          --topic ordersTopic \
-          --partitions 1 \
-          --replication-factor 1
-      
-        echo "2. Aplicando permisos de ESCRITURA para writer-app..."
-        /opt/kafka/bin/kafka-acls.sh --bootstrap-server kafka:9092 \
-          --command-config /tmp/admin.properties \
-          --add \
-          --allow-principal User:writer-app \
-          --operation Write \
-          --operation Describe \
-          --topic ordersTopic
-      
-        echo "3. Aplicando permisos de LECTURA para consumer-app..."
-        /opt/kafka/bin/kafka-acls.sh --bootstrap-server kafka:9092 \
-          --command-config /tmp/admin.properties \
-          --add \
-          --allow-principal User:consumer-app \
-          --operation Read \
-          --operation Describe \
-          --topic ordersTopic \
-          --group order-group
-      
-        echo "¡Autorizaciones aplicadas correctamente!"
+#  # Servicio de inicialización para ACLs
+#  kafka-init:
+#    image: apache/kafka:latest
+#    container_name: kafka-init
+#    networks:
+#      - red-microservicios
+#    depends_on:
+#      - kafka
+#    entrypoint: [ "/bin/bash", "-c" ]
+#    command:
+#      - |
+#        echo "Esperando a que el broker de Kafka esté disponible..."
+#        sleep 10
+#
+#        echo "1. Creando archivo de credenciales..."
+#        cat > /tmp/admin.properties <<EOF
+#        security.protocol=SASL_PLAINTEXT
+#        sasl.mechanism=PLAIN
+#        sasl.jaas.config=org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="admin-password";
+#        EOF
+#
+#        echo "2. Creando Topicos..."
+#        /opt/kafka/bin/kafka-topics.sh --bootstrap-server kafka:9092 \
+#          --command-config /tmp/admin.properties \
+#          --create \
+#          --if-not-exists \
+#          --topic ordersTopic \
+#          --partitions 1 \
+#          --replication-factor 1
+#
+#        echo "2. Aplicando permisos de ESCRITURA para writer-app..."
+#        /opt/kafka/bin/kafka-acls.sh --bootstrap-server kafka:9092 \
+#          --command-config /tmp/admin.properties \
+#          --add \
+#          --allow-principal User:writer-app \
+#          --operation Write \
+#          --operation Describe \
+#          --topic ordersTopic
+#
+#        echo "3. Aplicando permisos de LECTURA para consumer-app..."
+#        /opt/kafka/bin/kafka-acls.sh --bootstrap-server kafka:9092 \
+#          --command-config /tmp/admin.properties \
+#          --add \
+#          --allow-principal User:consumer-app \
+#          --operation Read \
+#          --operation Describe \
+#          --topic ordersTopic \
+#          --group order-group
+#
+#        echo "¡Autorizaciones aplicadas correctamente!"
