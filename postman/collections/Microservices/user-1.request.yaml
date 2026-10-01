@@ -1,0 +1,9 @@
+$kind: http-request
+name: user
+url: localhost:8080/user
+method: GET
+auth:
+  type: oauth2
+  credentials:
+    addTokenTo: header
+order: 1978

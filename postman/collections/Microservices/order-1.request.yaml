@@ -1,0 +1,23 @@
+$kind: http-request
+name: order
+description: ""
+url: localhost:8080/order
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"id\":\"null\",\r
+
+    \    \"quantity\":40000,\r
+
+    \    \"from\":\"03217373H\",\r
+
+    \    \"towards\": \"73737373J\"\r
+
+    }"
+auth:
+  type: oauth2
+  credentials:
+    addTokenTo: header
+order: 4449757050305775

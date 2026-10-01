@@ -1,0 +1,12 @@
+$kind: http-request
+description: ""
+url: localhost:8080/user/insert/30000
+method: PUT
+body:
+  type: json
+  content: ""
+auth:
+  type: oauth2
+  credentials:
+    addTokenTo: header
+order: 4461713114804382

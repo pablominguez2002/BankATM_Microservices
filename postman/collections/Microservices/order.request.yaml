@@ -1,0 +1,9 @@
+$kind: http-request
+url: localhost:8080/order
+method: GET
+auth:
+  type: oauth2
+  credentials:
+    addTokenTo: header
+examples: .resources/order.resources/examples
+order: 2000

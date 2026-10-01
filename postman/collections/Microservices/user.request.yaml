@@ -1,0 +1,34 @@
+$kind: http-request
+description: ""
+url: localhost:8080/user
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \t\"id\":\"null\",\r
+
+    \t\"name\":\"Laura\",\r
+
+    \t\"apellidos\":\"Castillejo Nina\",\r
+
+    \t\"password\":\"l123\",\r
+
+    \t\"role\":\"USER\",\r
+
+    \t\"dni\":\"7855129Z\",\r
+
+    \t\"email\":\"laura@gmail.com\",\r
+
+    \t\"phone\":\"454115565\",\r
+
+    \t\"money\":\"56432.78\",\r
+
+    \t\"location\":\"Madrid, España\"\r
+
+    }"
+auth:
+  type: oauth2
+  credentials:
+    addTokenTo: header
+order: 4442684331655194
