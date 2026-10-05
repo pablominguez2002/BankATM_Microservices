@@ -71,7 +71,7 @@ debes tener Docker Instalado)
 Primeramente debes de Autenticarte en la Aplicación mediante tu 
 Cuenta de Google.
 La aplicación utiliza únicamente la verificación por el servicio OAuth2 
-de Google como forma de autenticación.
+de Google como forma de autenticación (OAuth2 Resource Server).
 
 Para probar la aplicación, puedes utilizar las siguientes llamadas HTTP:
 - **Obtener Lista de Usuarios:** (GET) `http://localhost:8080/user`
