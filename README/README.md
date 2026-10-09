@@ -82,7 +82,19 @@ Para probar la aplicación, puedes utilizar las siguientes llamadas HTTP:
 - **Crea una Orden en la Lista:** (POST) `http://localhost:8080/order`
 - **Borra una Orden de la Lista (Introduce el ID al final de la Ruta como una Variable):** (DELETE) `http://localhost:8080/order/id`
 - **Procesa una Orden (Introduce la Orden en el Cuerpo de la Solicitud):** (POST) `http://localhost:8080/order/process`
-
+  
 Es recomendable que tras las Operaciones Modificantes, verifique que los datos han sido actualizados correctamente.  
 Tambien es recomendable verificar si ha recibido un correo electrónico en su cuenta tras ciertas 
-operaciones como crear un Usuario o Procesar una Orden. 
+operaciones como crear un Usuario, crear una Orden o Procesar una Orden. 
+
+## ⚙️ Mejoras Futuras
+
+Próximamente, espero añadir una serie de grandes características en el Proyecto
+
+- Desplegar el Proyecto en la Web (Cloud - AWS)☁️
+- Integrar una Herramienta de Terminal basada en IA (Agente) para ayudar tanto en futuros desarrollos como en la mantenibilidad del Proyecto (OpenCode o ClaudeCode) 🕵️‍♂️
+- Desarrollar el FrontEnd de la App para incluir una Interfaz de Usuario amigable y simple de usar (TypeScript plus React or Angular) 💻
+- Implementar la Orquestación y Gestión de mis Microservicios Contenerizados con Docker (Kubernetes) 🎹🎻
+
+Después de implementar estos 4 proyectos principales, supongo que seguiré aprendiendo otras diferentes herramientas de software o profundizaré más mis conocimientos en las que ya conozco. 
+
