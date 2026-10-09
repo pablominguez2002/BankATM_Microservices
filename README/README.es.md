@@ -14,7 +14,8 @@
 </p>
 
 <div align="center">
-
+  
+Read this in: [English](README.md)
 [![Licencia AGPLv3](https://img.shields.io/badge/license-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0.html)
 [![Estado](https://img.shields.io/badge/status-active-brightgreen.svg)]()
 
